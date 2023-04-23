@@ -39,14 +39,14 @@
 
 
 .App {
-  /* text-align: center; */
-  display: flex;
-  /* flex-direction: column; */
+  /* display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  
+  justify-content: center; */
+  min-height: 100vh;
+
 }
+
+
 
 .login-con {
   display: flex;
@@ -54,18 +54,59 @@
   padding: 20px;
   border-radius: 20px;
   /* background-color: #002B5B; */
-  outline: 2px solid #002B5B;
-  width: 500px;
+  /* outline: 2px solid #3C486B; */
+  /* width: 500px; */
 }
 
 .nav-con {
-  position: fixed;
+  position: static;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #57C5B6;
+  background-color: #F0F0F0;
   /* color: white; */
   padding: 10px;
+  /* display: flex;
+  flex-direction: row; */
+}
+
+.home-con {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 93vh;
+}
+
+.manage-con {
+  display: flex;
+}
+
+.regis-product {
+  padding: 50px;
+  width: 25%;
+  /* background-color: bisque; */
+}
+
+.regis-product button {
+  margin-bottom: 50px;
+  
+}
+
+.my-product-list {
+  /* background-color: aquamarine; */
+  width: 75%;  
+}
+
+.insert-product {
+  padding: 30px;
+  outline: 2px solid #3C486B;
+  border-radius: 20px;
+}
+
+.product-stack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 20px;
 }
