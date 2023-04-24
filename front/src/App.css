@@ -110,3 +110,18 @@
   grid-template-rows: repeat(3, 1fr);
   grid-gap: 20px;
 }
+
+.regis-con {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 93vh;
+  /* background-color: aquamarine; */
+}
+
+
+.regis-pos {
+  display: flex;
+  flex-direction: column;
+}

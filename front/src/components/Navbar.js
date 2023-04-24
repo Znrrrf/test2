@@ -3,7 +3,7 @@ import {
     FormLabel
 } from "@chakra-ui/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -16,15 +16,10 @@ const NavBar = () => {
 
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setEmail(e.target.value);
-        console.log(email);
-    }
 
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
-        console.log(password);
-    }
+
+
+
 
     return (
         <div className="nav-con">
@@ -41,33 +36,25 @@ const NavBar = () => {
                         <ModalHeader>Login To Web</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                            {/* <Text>
-                                Magna aute fugiat et mollit.
-                            </Text> */}
                             <div className="login-con">
                                 <FormControl isRequired>
                                     <FormLabel>Email</FormLabel>
-                                    <Input placeholder='email' type="email" onChange={(e) => handleChange(e)} />
+                                    <Input placeholder='email' type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                                 </FormControl>
                                 <FormControl isRequired>
                                     <FormLabel>Password</FormLabel>
-                                    <Input placeholder="password" type="password" onChange={(e) => handleChangePassword(e)} />
+                                    <Input placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </FormControl>
                                 <Button colorScheme="green" variant='solid' >Login</Button>
-                                <Button colorScheme="teal" variant='ghost' >Click here if dont have an account</Button>
+                                <Button colorScheme="teal" variant='ghost' onClick={() => {
+                                    onClose()
+                                    navigate('/register')
+                                }}>Click here if dont have an account</Button>
                             </div>
                         </ModalBody>
-
-                        <ModalFooter>
-                            <Button colorScheme='blue' mr={3} onClick={onClose}>
-                                Add account Click Here
-                            </Button>
-                            <Button variant='ghost'>Log In</Button>
-                        </ModalFooter>
                     </ModalContent>
                 </Modal>
             </Stack>
-
         </div>
     )
 }
