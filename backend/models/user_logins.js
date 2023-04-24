@@ -14,9 +14,34 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   user_logins.init({
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    email: DataTypes.STRING
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique:true
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique:true
+    },
+    password: {
+      type:DataTypes.STRING,
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull:false
+    },
+    store_name: {
+      type: DataTypes.STRING,
+      allowNull:false,
+      unique:true
+    },
+    phone_number: {
+      type: DataTypes.STRING,
+      allowNull:false,
+      unique:true
+    }
   }, {
     sequelize,
     modelName: 'user_logins',

@@ -20,6 +20,10 @@ app.use("/product", productRouters);
 
 
 app.listen(process.env.PORT, () => {
-    // db.sequelize.sync({ alter : true });
     console.log(`server is running on port: ${process.env.PORT}...`);
 });
+
+    // JANGAN UNCOMMENT KODE DIBAWAH INI !!!!!!!!!!!
+    // db.sequelize.sync({ alter : true });
+    // JANGAN UNCOMMENT KODE DIATAS INI !!!!!!!!!!!
+
