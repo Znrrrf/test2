@@ -21,6 +21,8 @@ const LoginPage = () => {
         console.log(password);
     }
 
+    
+
     return (
         <div className="login-con">
             <FormControl isRequired>

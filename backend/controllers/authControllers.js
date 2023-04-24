@@ -29,38 +29,40 @@ module.exports = {
     },
     login: async (req, res) => {
         try {
-            const { email, password, phone_number, username } = req.body;
+            const { value, login, password } = req.body;
+
             let isExist = null;
-            if (!username && !phone_number) {
+            
+            if (value === 'email') {
                 isExist = await user_logins.findOne({
                     where: {
-                        email
+                        email : login
                     }
                 })
-            } else if (!email && !phone_number) {
+            } else if (value === 'number') {
                 isExist = await user_logins.findOne({
                     where: {
-                        username
+                        phone_number : login
                     }
                 })
-            } else if (!username && !email) {
+            } else if (value === 'username') {
                 isExist = await user_logins.findOne({
                     where: {
-                        phone_number
+                        username : login
                     }
                 })
             }
 
             if (!isExist) throw {
                 status: false,
-                message: 'user not found'
+                message: "user not found"
             }
 
             const isValid = await bcrypt.compare(password, isExist.password);
-
+        
             if (!isValid) throw {
-                status:false,
-                message: 'wrong password'
+                status: false,
+                message: "wrong password"
             }
 
             res.status(200).send({

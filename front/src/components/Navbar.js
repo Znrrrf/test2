@@ -5,19 +5,63 @@ import {
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 
 
 const NavBar = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [login, setLogin] = useState('');
+    const [errLogin, setErrLogin] = useState(null)
     const navigate = useNavigate();
 
+    
+    function isEmail(login) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(login);
+    }
+    
+    const isNumber = (login) => {
+        return !isNaN(login);
+    }
 
+    const valueOnChange = () => {
+        
+    } 
 
+    const handleLogin = async () => {
+        console.log('button pressed');
+        if (isEmail(login)) {
+            // setValue("email");
+            sendToDataBase('email')
+        } else if (isNumber(login)) {
+            // setValue('number')
+            console.log(login);
+            sendToDataBase('number')
+        } else {
+            sendToDataBase("username")
+        }
+        
+
+    }
+
+    const sendToDataBase = async (value) => {
+
+        await axios.post('http://localhost:3000/auth/login', {
+            value,
+            login,
+            password
+        })
+            .then((result) => {
+                console.log('login successs');
+                console.log(result);
+            }).catch((err) => {
+                console.log(err);
+                setErrLogin(err.response.data.message);
+            });
+
+    }
 
 
 
@@ -39,17 +83,18 @@ const NavBar = () => {
                             <div className="login-con">
                                 <FormControl isRequired>
                                     <FormLabel>Email</FormLabel>
-                                    <Input placeholder='email' type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                    <Input placeholder='email' type="email" value={login} onChange={(e) => setLogin(e.target.value)} />
                                 </FormControl>
                                 <FormControl isRequired>
                                     <FormLabel>Password</FormLabel>
                                     <Input placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </FormControl>
-                                <Button colorScheme="green" variant='solid' >Login</Button>
+                                <Button colorScheme="green" variant='solid' onClick={() => handleLogin()}>Login</Button>
                                 <Button colorScheme="teal" variant='ghost' onClick={() => {
                                     onClose()
                                     navigate('/register')
                                 }}>Click here if dont have an account</Button>
+                                <Text>{errLogin}</Text>
                             </div>
                         </ModalBody>
                     </ModalContent>
