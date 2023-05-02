@@ -125,3 +125,12 @@
   display: flex;
   flex-direction: column;
 }
+
+.popover-con {
+  width: 200px;
+}
+
+.popover-profile {
+  display: flex;
+  flex-direction: column;
+}

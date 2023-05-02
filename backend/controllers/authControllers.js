@@ -32,25 +32,49 @@ module.exports = {
             const { value, login, password } = req.body;
 
             let isExist = null;
+            let dataSafe = null;
             
             if (value === 'email') {
                 isExist = await user_logins.findOne({
                     where: {
                         email : login
-                    }
-                })
+                    },
+                });
+
+                dataSafe = await user_logins.findOne({
+                    where: {
+                        email : login
+                    },
+                    attributes: ['id', 'username', 'email', 'name', 'store_name']
+                });
+
             } else if (value === 'number') {
                 isExist = await user_logins.findOne({
                     where: {
                         phone_number : login
-                    }
-                })
+                    },
+                });
+
+                dataSafe = await user_logins.findOne({
+                    where: {
+                        phone_number : login
+                    },
+                    attributes: ['id', 'username', 'email', 'name', 'store_name'],
+                });
+                
             } else if (value === 'username') {
                 isExist = await user_logins.findOne({
                     where: {
                         username : login
-                    }
-                })
+                    },
+                });
+
+                dataSafe = await user_logins.findOne({
+                    where: {
+                        username : login
+                    },
+                    attributes: ['id', 'username', 'email', 'name', 'store_name'],
+                });
             }
 
             if (!isExist) throw {
@@ -65,10 +89,13 @@ module.exports = {
                 message: "wrong password"
             }
 
+            // const { password, phone_number, updatedAt, createdAt, ...result } = isExist
+
             res.status(200).send({
                 status: true,
                 message: 'login success',
-                data: isExist
+                data: isExist,
+                safe: dataSafe
             })
         } catch (err) {
             res.status(400).send(err);
