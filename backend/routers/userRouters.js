@@ -3,6 +3,7 @@ const { userControllers } = require("../controllers");
 
 
 router.post("/delete/:id", userControllers.deleteUser);
+router.get("/all", userControllers.allUser);
 
 
 
