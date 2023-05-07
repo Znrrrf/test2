@@ -27,6 +27,7 @@ const NavBar = () => {
 
     const [password, setPassword] = useState('');
     const [login, setLogin] = useState('');
+    const [user_seller_id, setUserSellerId] = useState(JSON.parse(localStorage.getItem("idLogin")))
 
     const [errLogin, setErrLogin] = useState(null)
     const [profileIsLogin, setProfileIsLogin] = useState(false);
@@ -35,20 +36,23 @@ const NavBar = () => {
     const dispatch = useDispatch();
 
     const userIsLogin = useSelector((state) => state.userStore.value);
-    const dataUser = useSelector((state) => state.userStore.dataUser);
+    const dataUserSafe = useSelector((state) => state.userStore.dataUserSafe);
 
     useEffect(() => {
-        if (!dataUser) {
+        if (!dataUserSafe) {
             if (localStorage.getItem("users")) {
-                dispatch(isLogin(JSON.parse(localStorage.getItem("users"))));
+                dispatch(isSafe(JSON.parse(localStorage.getItem("users"))));
                 setProfileIsLogin(true)
             }
         } else {
             setProfileIsLogin(true)
         }
+        // console.log(JSON.parse(localStorage.getItem("users")));
 
-    })
 
+    },[])
+
+    
 
     function isEmail(login) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(login);
@@ -70,14 +74,36 @@ const NavBar = () => {
         } else {
             sendToDataBase("username")
         }
+        
     }
 
     const handleLogOut = () => {
         // dispatch(isLogout());
         navigate("/");
         localStorage.removeItem("users");
+        localStorage.removeItem("idLogin");
+        localStorage.removeItem("productSeller");
+
         window.location.reload();
     }
+
+    const getProductSeller = async () => {
+
+        await axios.post("http://localhost:3000/product/seller", {
+                    user_seller_id
+                })
+                    .then((result) => {
+                        console.log("id sended");
+                        console.log(result);
+                        // setProductSeller(result.data.productById)
+                        localStorage.setItem("productSeller", JSON.stringify(result.data.productById))
+                        navigate('/manage')
+                        // console.log(productSeller);
+                    }).catch((err) => {
+                        console.error(err);
+                    });
+
+    } 
 
 
     const sendToDataBase = async (value) => {
@@ -90,14 +116,26 @@ const NavBar = () => {
             .then((result) => {
                 console.log('login successs');
                 // console.log(result.data.data); // data semua di database user yang login (jangan sampai dilihat orang selain user yang login)
-                console.log(result.data.safe); // data aman jika dilihat orang lain selain user
-                dispatch(isLogin(result.data.data))
+                // console.log(result.data.safe); // data aman jika dilihat orang lain selain user
+                // dispatch(isLogin(result.data.data))
                 dispatch(isSafe(result.data.safe))
+                // SetUserSeller()
                 localStorage.setItem("users", JSON.stringify(result.data.safe))
-            }).catch((err) => {
+                localStorage.setItem("idLogin", JSON.stringify(result.data.safe.id))
+                setUserSellerId(result.data.safe.id)
+                // getProductSeller()
+                window.location.reload();
+
+                
+
+            })
+            .catch((err) => {
                 console.log(err);
                 setErrLogin(err.response.data.message);
             });
+            // console.log(dataUserSafe);
+
+
 
     }
 
@@ -124,7 +162,7 @@ const NavBar = () => {
                                 <PopoverCloseButton />
                                 <PopoverBody className="popover-profile">
                                     <Button isLoading loadingText="Hystori" colorScheme="gray" variant='ghost'>Hystori</Button>
-                                    <Button colorScheme="gray" variant='ghost' paddingLeft={7} paddingRight={7} onClick={() => navigate('/manage')}>Manage My Store</Button>
+                                    <Button colorScheme="gray" variant='ghost' paddingLeft={7} paddingRight={7} onClick={() => getProductSeller()}>Manage My Store</Button>
                                     <Button colorScheme='blue' onClick={() => handleLogOut()}>Log out</Button>
                                 </PopoverBody>
                                 <PopoverFooter>This is the footer</PopoverFooter>
@@ -147,7 +185,10 @@ const NavBar = () => {
                                         <FormLabel>Password</FormLabel>
                                         <Input placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                                     </FormControl>
-                                    <Button colorScheme="green" variant='solid' onClick={() => handleLogin()}>Login</Button>
+                                    <Button colorScheme="green" variant='solid' onClick={() => {
+                                        onClose()
+                                        handleLogin()
+                                        }}>Login</Button>
                                     <Button colorScheme="teal" variant='ghost' onClick={() => {
                                         onClose()
                                         navigate('/register')

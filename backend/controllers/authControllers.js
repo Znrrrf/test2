@@ -16,7 +16,7 @@ module.exports = {
                 phone_number,
                 store_name,
                 name
-            })
+            });
             // const data = await user_logins.create(req.body);
             res.status(200).send({
                 status: true,

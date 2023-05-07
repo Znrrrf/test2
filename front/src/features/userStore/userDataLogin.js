@@ -10,14 +10,15 @@ export const userDataLogin = createSlice({
     name: "userStore",
     initialState,
     reducers: {
-        isLogin: (state, actions) => {
-            state.value = actions.payload.name
-            state.dataUser = actions.payload
-            // console.log(state.dataUser);
-            // console.log(state.value)
-        },
+        // isLogin: (state, actions) => {
+        //     state.dataUser = actions.payload
+        //     // console.log(actions.payload);
+        //     // console.log(state.value)
+        // },
         isSafe: (state, actions) => {
             state.dataUserSafe = actions.payload
+            state.value = actions.payload.name
+            // console.log(actions.payload);
         },
         isLogout: (state) => {
             state.value = "log in"
